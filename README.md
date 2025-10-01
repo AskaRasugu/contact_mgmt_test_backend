@@ -1,61 +1,238 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Contacts Management System - Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A robust Laravel-based RESTful API for managing contacts and groups. This backend provides comprehensive CRUD operations with proper validation, error handling, and database relationships.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **RESTful API Design** - Clean, consistent API endpoints
+- **Eloquent ORM** - Efficient database operations with relationships
+- **Comprehensive Validation** - Server-side validation with custom error messages
+- **Database Migrations** - Version-controlled database schema
+- **CORS Configuration** - Cross-origin resource sharing for frontend integration
+- **Clean Architecture** - MVC pattern with proper separation of concerns
+- **Error Handling** - Graceful error responses with proper HTTP status codes
 
-## Learning Laravel
+## 📋 Prerequisites
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **PHP** >= 8.1
+- **Composer** (PHP dependency manager)
+- **MySQL** >= 5.7 or **SQLite** >= 3.8
+- **Git**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🛠️ Installation & Setup
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clone the Repository
 
-## Laravel Sponsors
+```bash
+git clone https://github.com/AskaRasugu/contact_mgmt_test_backend.git
+cd contact_mgmt_test_backend
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 2. Install Dependencies
 
-### Premium Partners
+```bash
+composer install
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 3. Environment Configuration
 
-## Contributing
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Database Configuration
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+####MySQL
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=contacts_app
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-## Security Vulnerabilities
+### 5. Database Setup
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Run migrations
+php artisan migrate
 
-## License
+# Seed database with sample data (optional)
+php artisan db:seed
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 6. Start Development Server
+
+```bash
+php artisan serve
+```
+
+The API will be available at: **http://localhost:8000**
+
+## 📊 Database Schema
+
+### Contacts Table
+```sql
+contacts
+├── id (Primary Key, Auto Increment)
+├── first_name (Required, String, Max 255)
+├── last_name (Required, String, Max 255)
+├── email (Required, Unique, Email)
+├── phone (Nullable, String, Max 20)
+├── address (Nullable, Text)
+├── birthday (Nullable, Date)
+├── notes (Nullable, Text)
+├── created_at (Timestamp)
+└── updated_at (Timestamp)
+```
+
+### Groups Table
+```sql
+groups
+├── id (Primary Key, Auto Increment)
+├── name (Required, Unique, String, Max 255)
+├── description (Nullable, Text)
+├── color (Default: #3B82F6, String, Max 7)
+├── created_at (Timestamp)
+└── updated_at (Timestamp)
+```
+
+### Contact_Group Pivot Table
+```sql
+contact_group
+├── id (Primary Key, Auto Increment)
+├── contact_id (Foreign Key → contacts.id)
+├── group_id (Foreign Key → groups.id)
+├── created_at (Timestamp)
+└── updated_at (Timestamp)
+```
+
+## 🔌 API Endpoints
+
+### Base URL
+```
+http://localhost:8000/api
+```
+
+### Contacts API
+
+| Method | Endpoint | Description | Parameters |
+|--------|----------|-------------|------------|
+| `GET` | `/contacts` | List all contacts | `search`, `group_id`, `page` |
+| `POST` | `/contacts` | Create new contact | Contact data (JSON) |
+| `GET` | `/contacts/{id}` | Get specific contact | Contact ID |
+| `PUT` | `/contacts/{id}` | Update contact | Contact ID, Updated data |
+| `DELETE` | `/contacts/{id}` | Delete contact | Contact ID |
+
+### Groups API
+
+| Method | Endpoint | Description | Parameters |
+|--------|----------|-------------|------------|
+| `GET` | `/groups` | List all groups | None |
+| `POST` | `/groups` | Create new group | Group data (JSON) |
+| `GET` | `/groups/{id}` | Get specific group | Group ID |
+| `PUT` | `/groups/{id}` | Update group | Group ID, Updated data |
+| `DELETE` | `/groups/{id}` | Delete group | Group ID |
+
+## 📝 API Documentation
+
+
+## 🏗️ Project Structure
+
+```
+contact_mgmt_test_backend/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       └── Api/
+│   │           ├── ContactController.php    # Contact CRUD operations
+│   │           └── GroupController.php      # Group CRUD operations
+│   └── Models/
+│       ├── Contact.php                      # Contact model with relationships
+│       └── Group.php                        # Group model with relationships
+├── database/
+│   ├── migrations/
+│   │   ├── 2024_01_01_000000_create_contacts_table.php
+│   │   ├── 2024_01_01_000001_create_groups_table.php
+│   │   └── 2024_01_01_000002_create_contact_group_table.php
+│   └── seeders/
+│       └── ContactGroupSeeder.php           # Sample data seeder
+├── routes/
+│   └── api.php                              # API route definitions
+├── config/
+│   └── cors.php                             # CORS configuration
+├── .env.example                             # Environment variables template
+├── composer.json                            # PHP dependencies
+└── artisan                                  # Laravel command-line tool
+```
+
+## 🧪 Testing
+
+### Run Tests
+```bash
+php artisan test
+```
+
+### Test Coverage
+```bash
+php artisan test --coverage
+```
+
+## 🚀 Deployment
+
+### Production Environment Setup
+
+1. **Server Requirements:**
+   - PHP >= 8.1
+   - MySQL >= 5.7 or PostgreSQL >= 10
+   - Web server (Apache/Nginx)
+
+2. **Deployment Steps:**
+   ```bash
+   # Clone repository
+   git clone https://github.com/AskaRasugu/contact_mgmt_test_backend.git
+   cd contact_mgmt_test_backend
+   
+   # Install dependencies
+   composer install --optimize-autoloader --no-dev
+   
+   # Environment setup
+   cp .env.example .env
+   # Edit .env with production values
+   
+   # Generate key
+   php artisan key:generate
+   
+   # Run migrations
+   php artisan migrate --force
+   
+   # Cache configuration
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   ```
+
+3. **Web Server Configuration:**
+   - Point document root to `public/` directory
+   - Configure URL rewriting for Laravel
+   - Set up SSL certificate
+
+## 🔒 Security Features
+
+- **Input Validation** - Comprehensive server-side validation
+- **SQL Injection Prevention** - Eloquent ORM protection
+- **CORS Configuration** - Controlled cross-origin requests
+- **Rate Limiting** - API request throttling
+- **Error Handling** - Secure error messages
+
+## 📈 Performance Optimizations
+
+- **Eager Loading** - Prevents N+1 query problems
+- **Database Indexing** - Optimized query performance
+- **Response Caching** - Cached API responses
+- **Pagination** - Efficient data loading
+
